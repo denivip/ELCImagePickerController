@@ -25,27 +25,8 @@
 
 - (void)selectedAssets:(NSArray *)assets
 {
-	NSMutableArray *returnArray = [[[NSMutableArray alloc] init] autorelease];
-	
-	for(ALAsset *asset in assets) {
-
-		NSMutableDictionary *workingDictionary = [[NSMutableDictionary alloc] init];
-		[workingDictionary setObject:[asset valueForProperty:ALAssetPropertyType] forKey:@"UIImagePickerControllerMediaType"];
-        ALAssetRepresentation *assetRep = [asset defaultRepresentation];
-        
-        CGImageRef imgRef = [assetRep fullScreenImage];
-        UIImage *img = [UIImage imageWithCGImage:imgRef
-                                           scale:[UIScreen mainScreen].scale
-                                     orientation:UIImageOrientationUp];
-        [workingDictionary setObject:img forKey:@"UIImagePickerControllerOriginalImage"];
-		[workingDictionary setObject:[[asset valueForProperty:ALAssetPropertyURLs] valueForKey:[[[asset valueForProperty:ALAssetPropertyURLs] allKeys] objectAtIndex:0]] forKey:@"UIImagePickerControllerReferenceURL"];
-		
-		[returnArray addObject:workingDictionary];
-		
-		[workingDictionary release];	
-	}    
-	if(_myDelegate != nil && [_myDelegate respondsToSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:)]) {
-		[_myDelegate performSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:) withObject:self withObject:[NSArray arrayWithArray:returnArray]];
+    if(_myDelegate != nil && [_myDelegate respondsToSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:)]) {
+		[_myDelegate performSelector:@selector(elcImagePickerController:didFinishPickingMediaWithInfo:) withObject:self withObject:[NSArray arrayWithArray:assets]];
 	} else {
         [self popToRootViewControllerAnimated:NO];
     }

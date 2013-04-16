@@ -30,12 +30,7 @@
     [albumController setParent:elcPicker];
 	[elcPicker setDelegate:self];
     
-    ELCImagePickerDemoAppDelegate *app = (ELCImagePickerDemoAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if ([app.viewController respondsToSelector:@selector(presentViewController:animated:completion:)]){
-        [app.viewController presentViewController:elcPicker animated:YES completion:nil];
-    } else {
-        [app.viewController presentModalViewController:elcPicker animated:YES];
-    }
+    [self presentViewController:elcPicker animated:YES completion:nil];
     
     [elcPicker release];
     [albumController release];

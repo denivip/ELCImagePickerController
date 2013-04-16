@@ -13,6 +13,7 @@
 @property (nonatomic, retain) NSArray *rowAssets;
 @property (nonatomic, retain) NSMutableArray *imageViewArray;
 @property (nonatomic, retain) NSMutableArray *overlayViewArray;
+@property (nonatomic, retain) NSMutableArray *durationViewArray;
 
 @end
 
@@ -31,6 +32,10 @@
         NSMutableArray *mutableArray = [[NSMutableArray alloc] initWithCapacity:4];
         self.imageViewArray = mutableArray;
         [mutableArray release];
+        
+        NSMutableArray *durationArray = [[NSMutableArray alloc] initWithCapacity:4];
+        self.durationViewArray = durationArray;
+        [durationArray release];
         
         NSMutableArray *overlayArray = [[NSMutableArray alloc] initWithCapacity:4];
         self.overlayViewArray = overlayArray;
@@ -56,10 +61,24 @@
         if (i < [_imageViewArray count]) {
             UIImageView *imageView = [_imageViewArray objectAtIndex:i];
             imageView.image = [UIImage imageWithCGImage:asset.asset.thumbnail];
+            
+            UILabel *labelView = [_durationViewArray objectAtIndex:i];
+            NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
+            labelView.text = [NSString stringWithFormat:@"%d:%02d", duration/60, duration%60];
+            
         } else {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithCGImage:asset.asset.thumbnail]];
             [_imageViewArray addObject:imageView];
             [imageView release];
+        
+            UILabel *labelView = [[UILabel alloc] init];
+            labelView.backgroundColor = [UIColor colorWithWhite:0.3f alpha:0.5f];
+            labelView.textAlignment = NSTextAlignmentRight;
+            labelView.textColor = [UIColor whiteColor];
+            labelView.font = [UIFont systemFontOfSize:14.f];
+            NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
+            labelView.text = [NSString stringWithFormat:@"%d:%02d", duration/60, duration%60];
+            [_durationViewArray addObject:labelView];
         }
         
         if (i < [_overlayViewArray count]) {
@@ -80,8 +99,7 @@
 - (void)cellTapped:(UITapGestureRecognizer *)tapRecognizer
 {
     CGPoint point = [tapRecognizer locationInView:self];
-    CGFloat totalWidth = self.rowAssets.count * 75 + (self.rowAssets.count - 1) * 4;
-    CGFloat startX = (self.bounds.size.width - totalWidth) / 2;
+    CGFloat startX = 4;
     
 	CGRect frame = CGRectMake(startX, 2, 75, 75);
 	
@@ -99,16 +117,20 @@
 
 - (void)layoutSubviews
 {    
-    CGFloat totalWidth = self.rowAssets.count * 75 + (self.rowAssets.count - 1) * 4;
-    CGFloat startX = (self.bounds.size.width - totalWidth) / 2;
+    CGFloat startX = 4;
     
 	CGRect frame = CGRectMake(startX, 2, 75, 75);
+	CGRect frameDuration = CGRectMake(0, 55, 75, 20);
 	
 	for (int i = 0; i < [_rowAssets count]; ++i) {
 		UIImageView *imageView = [_imageViewArray objectAtIndex:i];
 		[imageView setFrame:frame];
 		[self addSubview:imageView];
         
+        UILabel *durationView = [_durationViewArray objectAtIndex:i];
+        [durationView setFrame:frameDuration];
+        [imageView addSubview:durationView];
+		
         UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
         [overlayView setFrame:frame];
         [self addSubview:overlayView];

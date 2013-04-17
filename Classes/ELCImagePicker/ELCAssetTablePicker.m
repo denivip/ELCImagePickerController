@@ -94,7 +94,7 @@
                                           animated:NO];
         }
         
-        [self.navigationItem setTitle:self.singleSelection ? @"Pick Photo" : @"Pick Photos"];
+        [self.navigationItem setTitle:self.singleSelection ? @"Pick Records" : @"Pick Records"];
     });
     
     [pool release];

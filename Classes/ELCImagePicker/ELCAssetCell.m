@@ -14,6 +14,7 @@
 @property (nonatomic, retain) NSMutableArray *imageViewArray;
 @property (nonatomic, retain) NSMutableArray *overlayViewArray;
 @property (nonatomic, retain) NSMutableArray *durationViewArray;
+@property (nonatomic, retain) NSMutableArray *cameraViewArray;
 
 @end
 
@@ -36,6 +37,10 @@
         NSMutableArray *durationArray = [[NSMutableArray alloc] initWithCapacity:4];
         self.durationViewArray = durationArray;
         [durationArray release];
+        
+        NSMutableArray *cameraArray = [[NSMutableArray alloc] initWithCapacity:4];
+        self.cameraViewArray = cameraArray;
+        [cameraArray release];
         
         NSMutableArray *overlayArray = [[NSMutableArray alloc] initWithCapacity:4];
         self.overlayViewArray = overlayArray;
@@ -72,13 +77,17 @@
             [imageView release];
         
             UILabel *labelView = [[UILabel alloc] init];
-            labelView.backgroundColor = [UIColor colorWithWhite:0.3f alpha:0.5f];
+            labelView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.7f];
             labelView.textAlignment = NSTextAlignmentRight;
             labelView.textColor = [UIColor whiteColor];
             labelView.font = [UIFont systemFontOfSize:14.f];
             NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
             labelView.text = [NSString stringWithFormat:@"%d:%02d", duration/60, duration%60];
             [_durationViewArray addObject:labelView];
+        
+            UIImageView *cameraView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_cam"]];
+            [_cameraViewArray addObject:cameraView];
+            [cameraView release];
         }
         
         if (i < [_overlayViewArray count]) {
@@ -121,6 +130,7 @@
     
 	CGRect frame = CGRectMake(startX, 2, 75, 75);
 	CGRect frameDuration = CGRectMake(0, 55, 75, 20);
+	CGRect frameCamera = CGRectMake(5, 5, 16, 10);
 	
 	for (int i = 0; i < [_rowAssets count]; ++i) {
 		UIImageView *imageView = [_imageViewArray objectAtIndex:i];
@@ -130,6 +140,10 @@
         UILabel *durationView = [_durationViewArray objectAtIndex:i];
         [durationView setFrame:frameDuration];
         [imageView addSubview:durationView];
+		
+        UIImageView *cameraView = [_cameraViewArray objectAtIndex:i];
+        [cameraView setFrame:frameCamera];
+        [durationView addSubview:cameraView];
 		
         UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
         [overlayView setFrame:frame];
@@ -143,6 +157,8 @@
 {
 	[_rowAssets release];
     [_imageViewArray release];
+    [_durationViewArray release];
+    [_cameraViewArray release];
     [_overlayViewArray release];
 	[super dealloc];
 }

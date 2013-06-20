@@ -24,6 +24,7 @@
 @synthesize elcAssets = _elcAssets;
 @synthesize singleSelection = _singleSelection;
 @synthesize columns = _columns;
+@synthesize disabledURLs = _disabledURLs;
 
 - (void)viewDidLoad
 {
@@ -68,14 +69,18 @@
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
     NSLog(@"enumerating photos");
+   
     [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         
         if(result == nil) {
             return;
         }
-
+        
         ELCAsset *elcAsset = [[ELCAsset alloc] initWithAsset:result];
         [elcAsset setParent:self];
+        NSString *url = [[[result valueForProperty:ALAssetPropertyAssetURL] absoluteString] retain];
+        elcAsset.enabled = ![self.disabledURLs containsObject:url];
+        [url release];
         [self.elcAssets addObject:elcAsset];
         [elcAsset release];
      }];
@@ -190,7 +195,8 @@
 
 - (void)dealloc 
 {
-    [_assetGroup release];    
+    [_disabledURLs release];
+    [_assetGroup release];
     [_elcAssets release];
     [_selectedAssetsLabel release];
     [super dealloc];    

@@ -53,10 +53,14 @@
             if (group == nil) {
                 return;
             }
-            
+            [group setAssetsFilter:[ALAssetsFilter allVideos]];
+            if ([group numberOfAssets] == 0) {
+                return;
+            }
             // added fix for camera albums order
             NSString *sGroupPropertyName = (NSString *)[group valueForProperty:ALAssetsGroupPropertyName];
             NSUInteger nType = [[group valueForProperty:ALAssetsGroupPropertyType] intValue];
+            
             
             if ([[sGroupPropertyName lowercaseString] isEqualToString:@"camera roll"] && nType == ALAssetsGroupSavedPhotos) {
                 [self.assetGroups insertObject:group atIndex:0];
@@ -99,6 +103,10 @@
 	[_parent selectedAssets:assets];
 }
 
+-(NSArray*)disabledURLs{
+    return [_parent disabledURLs];
+}
+
 #pragma mark -
 #pragma mark Table view data source
 
@@ -126,7 +134,6 @@
     
     // Get count
     ALAssetsGroup *g = (ALAssetsGroup*)[self.assetGroups objectAtIndex:indexPath.row];
-    [g setAssetsFilter:[ALAssetsFilter allVideos]];
     NSInteger gCount = [g numberOfAssets];
     
     cell.textLabel.text = [NSString stringWithFormat:@"%@ (%d)",[g valueForProperty:ALAssetsGroupPropertyName], gCount];
@@ -146,7 +153,7 @@
 
     picker.assetGroup = [self.assetGroups objectAtIndex:indexPath.row];
     [picker.assetGroup setAssetsFilter:[ALAssetsFilter allVideos]];
-    
+    picker.disabledURLs = [self disabledURLs];
 	[self.navigationController pushViewController:picker animated:YES];
 	[picker release];
 }

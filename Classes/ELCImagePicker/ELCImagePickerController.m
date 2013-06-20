@@ -12,9 +12,16 @@
 #import "ELCAssetTablePicker.h"
 #import "ELCAlbumPickerController.h"
 
+@interface ELCImagePickerController ()
+
+@property (nonatomic, retain) NSArray *disabledURLs;
+
+@end
+
 @implementation ELCImagePickerController
 
 @synthesize delegate = _myDelegate;
+@synthesize disabledURLs = _disabledURLs;
 
 - (void)cancelImagePicker
 {
@@ -30,6 +37,17 @@
 	} else {
         [self popToRootViewControllerAnimated:NO];
     }
+}
+
+- (NSArray *)disabledURLs{
+    if (_disabledURLs == nil) {
+        NSArray *disabledURLs = nil;
+        if ([self.delegate respondsToSelector:@selector(elcImagePickerControllerDisabledURLs:)]) {
+            disabledURLs = [[self.delegate elcImagePickerControllerDisabledURLs:self] retain];
+        }
+        _disabledURLs = disabledURLs;
+    }
+    return _disabledURLs;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -59,6 +77,7 @@
 - (void)dealloc
 {
     NSLog(@"deallocing ELCImagePickerController");
+    [_disabledURLs release];
     [super dealloc];
 }
 

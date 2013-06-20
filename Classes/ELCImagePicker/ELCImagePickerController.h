@@ -16,6 +16,9 @@
 - (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info;
 - (void)elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker;
 
+@optional
+- (NSArray*)elcImagePickerControllerDisabledURLs:(ELCImagePickerController *)picker;
+
 @end
 
 @interface ELCImagePickerController : UINavigationController <ELCAssetSelectionDelegate>

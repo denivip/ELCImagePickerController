@@ -59,6 +59,7 @@
 	}
     //set up a pointer here so we don't keep calling [UIImage imageNamed:] if creating overlays
     UIImage *overlayImage = nil;
+    UIImage *overlayImageHighlighted = nil;
     for (int i = 0; i < [_rowAssets count]; ++i) {
 
         ELCAsset *asset = [_rowAssets objectAtIndex:i];
@@ -66,7 +67,6 @@
         if (i < [_imageViewArray count]) {
             UIImageView *imageView = [_imageViewArray objectAtIndex:i];
             imageView.image = [UIImage imageWithCGImage:asset.asset.thumbnail];
-            
             UILabel *labelView = [_durationViewArray objectAtIndex:i];
             NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
             labelView.text = [NSString stringWithFormat:@"%d:%02d", duration/60, duration%60];
@@ -92,14 +92,17 @@
         
         if (i < [_overlayViewArray count]) {
             UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
-            overlayView.hidden = asset.selected ? NO : YES;
+            overlayView.hidden = asset.selected || !asset.enabled ? NO : YES;
+            overlayView.highlighted = !asset.enabled;
         } else {
             if (overlayImage == nil) {
-                overlayImage = [UIImage imageNamed:@"Overlay.png"];
+                overlayImage = [UIImage imageNamed:@"Overlay"];
+                overlayImageHighlighted = [UIImage imageNamed:@"Overlay-disabled"];
             }
-            UIImageView *overlayView = [[UIImageView alloc] initWithImage:overlayImage];
+            UIImageView *overlayView = [[UIImageView alloc] initWithImage:overlayImage highlightedImage:overlayImageHighlighted];
             [_overlayViewArray addObject:overlayView];
-            overlayView.hidden = asset.selected ? NO : YES;
+            overlayView.hidden = asset.selected || !asset.enabled ? NO : YES;
+            overlayView.highlighted = !asset.enabled;
             [overlayView release];
         }
     }
@@ -115,9 +118,11 @@
 	for (int i = 0; i < [_rowAssets count]; ++i) {
         if (CGRectContainsPoint(frame, point)) {
             ELCAsset *asset = [_rowAssets objectAtIndex:i];
-            asset.selected = !asset.selected;
-            UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
-            overlayView.hidden = !asset.selected;
+            if (asset.enabled) {
+                asset.selected = !asset.selected;
+                UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
+                overlayView.hidden = !asset.selected;
+            }
             break;
         }
         frame.origin.x = frame.origin.x + frame.size.width + 4;

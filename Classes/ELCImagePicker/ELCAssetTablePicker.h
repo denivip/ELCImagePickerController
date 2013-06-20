@@ -18,6 +18,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *selectedAssetsLabel;
 @property (nonatomic, assign) BOOL singleSelection;
 @property (nonatomic, assign) BOOL immediateReturn;
+@property (nonatomic, retain) NSArray *disabledURLs;
 
 - (int)totalSelectedAssets;
 - (void)preparePhotos;

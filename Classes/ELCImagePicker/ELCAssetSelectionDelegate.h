@@ -11,5 +11,6 @@
 @protocol ELCAssetSelectionDelegate <NSObject>
 
 - (void)selectedAssets:(NSArray *)assets;
+- (NSArray *)disabledURLs;
 
 @end

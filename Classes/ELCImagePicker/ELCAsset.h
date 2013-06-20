@@ -22,6 +22,7 @@
 @property (nonatomic, retain) ALAsset *asset;
 @property (nonatomic, assign) id<ELCAssetDelegate> parent;
 @property (nonatomic, assign) BOOL selected;
+@property (nonatomic, assign) BOOL enabled;
 
 - (id)initWithAsset:(ALAsset *)asset;
 

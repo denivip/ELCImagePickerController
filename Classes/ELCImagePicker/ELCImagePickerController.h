@@ -21,7 +21,7 @@
 
 @end
 
-@interface ELCImagePickerController : UINavigationController <ELCAssetSelectionDelegate>
+@interface ELCImagePickerController : DVNavigationController <ELCAssetSelectionDelegate>
 
 @property (nonatomic, assign) id<ELCImagePickerControllerDelegate> delegate;
 

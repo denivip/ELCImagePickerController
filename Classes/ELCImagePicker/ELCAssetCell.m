@@ -84,6 +84,7 @@
             NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
             labelView.text = [NSString stringWithFormat:@"%d:%02d", duration/60, duration%60];
             [_durationViewArray addObject:labelView];
+            [labelView release];
         
             UIImageView *cameraView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_cam"]];
             [_cameraViewArray addObject:cameraView];

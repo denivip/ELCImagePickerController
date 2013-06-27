@@ -54,7 +54,7 @@
 - (void)setAssets:(NSArray *)assets
 {
     self.rowAssets = assets;
-	for (UIView *view in [self subviews]) {
+	for (UIView *view in [self.contentView subviews]) {
 		[view removeFromSuperview];
 	}
     //set up a pointer here so we don't keep calling [UIImage imageNamed:] if creating overlays
@@ -141,7 +141,7 @@
 	for (int i = 0; i < [_rowAssets count]; ++i) {
 		UIImageView *imageView = [_imageViewArray objectAtIndex:i];
 		[imageView setFrame:frame];
-		[self addSubview:imageView];
+		[self.contentView addSubview:imageView];
         
         UILabel *durationView = [_durationViewArray objectAtIndex:i];
         [durationView setFrame:frameDuration];
@@ -153,7 +153,7 @@
 		
         UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
         [overlayView setFrame:frame];
-        [self addSubview:overlayView];
+        [self.contentView addSubview:overlayView];
 		
 		frame.origin.x = frame.origin.x + frame.size.width + 4;
 	}

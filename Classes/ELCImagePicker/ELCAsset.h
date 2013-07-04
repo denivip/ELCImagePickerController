@@ -19,10 +19,10 @@
 
 @interface ELCAsset : NSObject
 
-@property (nonatomic, retain) ALAsset *asset;
-@property (nonatomic, assign) id<ELCAssetDelegate> parent;
-@property (nonatomic, assign) BOOL selected;
-@property (nonatomic, assign) BOOL enabled;
+@property (nonatomic, strong) ALAsset *asset;
+@property (nonatomic, weak) id<ELCAssetDelegate> parent;
+@property (nonatomic) BOOL selected;
+@property (nonatomic) BOOL enabled;
 
 - (id)initWithAsset:(ALAsset *)asset;
 

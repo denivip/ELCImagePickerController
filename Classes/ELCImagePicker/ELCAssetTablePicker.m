@@ -12,19 +12,11 @@
 
 @interface ELCAssetTablePicker ()
 
-@property (nonatomic, assign) int columns;
+@property (nonatomic) int columns;
 
 @end
 
 @implementation ELCAssetTablePicker
-
-@synthesize parent = _parent;;
-@synthesize selectedAssetsLabel = _selectedAssetsLabel;
-@synthesize assetGroup = _assetGroup;
-@synthesize elcAssets = _elcAssets;
-@synthesize singleSelection = _singleSelection;
-@synthesize columns = _columns;
-@synthesize disabledURLs = _disabledURLs;
 
 - (void)viewDidLoad
 {
@@ -33,12 +25,11 @@
 
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
     self.elcAssets = tempArray;
-    [tempArray release];
 	
     if (self.immediateReturn) {
         
     } else {
-        UIBarButtonItem *doneButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)] autorelease];
+        UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
         [self.navigationItem setRightBarButtonItem:doneButtonItem];
         [self.navigationItem setTitle:@"Loading..."];
     }
@@ -66,49 +57,44 @@
 
 - (void)preparePhotos
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    @autoreleasepool {
+        NSLog(@"enumerating photos");
 
-    NSLog(@"enumerating photos");
-   
-    [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-        
-        if(result == nil) {
-            return;
-        }
-        
-        ELCAsset *elcAsset = [[ELCAsset alloc] initWithAsset:result];
-        [elcAsset setParent:self];
-        NSString *url = [[[result valueForProperty:ALAssetPropertyAssetURL] absoluteString] retain];
-        elcAsset.enabled = ![self.disabledURLs containsObject:url];
-        [url release];
-        [self.elcAssets addObject:elcAsset];
-        [elcAsset release];
-     }];
-    NSLog(@"done enumerating photos");
-    
-    dispatch_sync(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-        // scroll to bottom
-        int section = [self numberOfSectionsInTableView:self.tableView] - 1;
-        int row = [self tableView:self.tableView numberOfRowsInSection:section] - 1;
-        if (section >= 0 && row >= 0) {
-            NSIndexPath *ip = [NSIndexPath indexPathForRow:row
-                                                 inSection:section];
-            [self.tableView scrollToRowAtIndexPath:ip
-                                  atScrollPosition:UITableViewScrollPositionBottom
-                                          animated:NO];
-        }
-        
-        [self.navigationItem setTitle:self.singleSelection ? @"Pick Records" : @"Pick Records"];
-    });
-    
-    [pool release];
+        [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
 
+            if(result == nil) {
+                return;
+            }
+
+            ELCAsset *elcAsset = [[ELCAsset alloc] initWithAsset:result];
+            [elcAsset setParent:self];
+            NSString *url = [[result valueForProperty:ALAssetPropertyAssetURL] absoluteString];
+            elcAsset.enabled = ![self.disabledURLs containsObject:url];
+            [self.elcAssets addObject:elcAsset];
+        }];
+        NSLog(@"done enumerating photos");
+
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            // scroll to bottom
+            int section = [self numberOfSectionsInTableView:self.tableView] - 1;
+            int row = [self tableView:self.tableView numberOfRowsInSection:section] - 1;
+            if (section >= 0 && row >= 0) {
+                NSIndexPath *ip = [NSIndexPath indexPathForRow:row
+                                                     inSection:section];
+                [self.tableView scrollToRowAtIndexPath:ip
+                                      atScrollPosition:UITableViewScrollPositionBottom
+                                              animated:NO];
+            }
+            
+            [self.navigationItem setTitle:self.singleSelection ? @"Pick Records" : @"Pick Records"];
+        });
+    }
 }
 
 - (void)doneAction:(id)sender
 {	
-	NSMutableArray *selectedAssetsImages = [[[NSMutableArray alloc] init] autorelease];
+	NSMutableArray *selectedAssetsImages = [[NSMutableArray alloc] init];
 	    
 	for(ELCAsset *elcAsset in self.elcAssets) {
 
@@ -166,7 +152,7 @@
     ELCAssetCell *cell = (ELCAssetCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     if (cell == nil) {		        
-        cell = [[[ELCAssetCell alloc] initWithAssets:[self assetsForIndexPath:indexPath] reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[ELCAssetCell alloc] initWithAssets:[self assetsForIndexPath:indexPath] reuseIdentifier:CellIdentifier];
 
     } else {		
 		[cell setAssets:[self assetsForIndexPath:indexPath]];
@@ -191,15 +177,6 @@
 	}
     
     return count;
-}
-
-- (void)dealloc 
-{
-    [_disabledURLs release];
-    [_assetGroup release];
-    [_elcAssets release];
-    [_selectedAssetsLabel release];
-    [super dealloc];    
 }
 
 @end

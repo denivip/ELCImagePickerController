@@ -23,7 +23,7 @@
 
 @interface ELCImagePickerController : DVNavigationController <ELCAssetSelectionDelegate>
 
-@property (nonatomic, assign) id<ELCImagePickerControllerDelegate> delegate;
+@property (nonatomic, weak) id<ELCImagePickerControllerDelegate> delegate;
 
 - (void)cancelImagePicker;
 

@@ -10,11 +10,11 @@
 
 @interface ELCAssetCell ()
 
-@property (nonatomic, retain) NSArray *rowAssets;
-@property (nonatomic, retain) NSMutableArray *imageViewArray;
-@property (nonatomic, retain) NSMutableArray *overlayViewArray;
-@property (nonatomic, retain) NSMutableArray *durationViewArray;
-@property (nonatomic, retain) NSMutableArray *cameraViewArray;
+@property (nonatomic, strong) NSArray *rowAssets;
+@property (nonatomic, strong) NSMutableArray *imageViewArray;
+@property (nonatomic, strong) NSMutableArray *overlayViewArray;
+@property (nonatomic, strong) NSMutableArray *durationViewArray;
+@property (nonatomic, strong) NSMutableArray *cameraViewArray;
 
 @end
 
@@ -28,23 +28,18 @@
 	if(self) {
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTapped:)];
         [self addGestureRecognizer:tapRecognizer];
-        [tapRecognizer release];
         
         NSMutableArray *mutableArray = [[NSMutableArray alloc] initWithCapacity:4];
         self.imageViewArray = mutableArray;
-        [mutableArray release];
         
         NSMutableArray *durationArray = [[NSMutableArray alloc] initWithCapacity:4];
         self.durationViewArray = durationArray;
-        [durationArray release];
         
         NSMutableArray *cameraArray = [[NSMutableArray alloc] initWithCapacity:4];
         self.cameraViewArray = cameraArray;
-        [cameraArray release];
         
         NSMutableArray *overlayArray = [[NSMutableArray alloc] initWithCapacity:4];
         self.overlayViewArray = overlayArray;
-        [overlayArray release];
 
         [self setAssets:assets];
 	}
@@ -74,7 +69,6 @@
         } else {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithCGImage:asset.asset.thumbnail]];
             [_imageViewArray addObject:imageView];
-            [imageView release];
         
             UILabel *labelView = [[UILabel alloc] init];
             labelView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.7f];
@@ -84,11 +78,9 @@
             NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
             labelView.text = [NSString stringWithFormat:@"%d:%02d", duration/60, duration%60];
             [_durationViewArray addObject:labelView];
-            [labelView release];
         
             UIImageView *cameraView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_cam"]];
             [_cameraViewArray addObject:cameraView];
-            [cameraView release];
         }
         
         if (i < [_overlayViewArray count]) {
@@ -104,7 +96,6 @@
             [_overlayViewArray addObject:overlayView];
             overlayView.hidden = asset.selected || !asset.enabled ? NO : YES;
             overlayView.highlighted = !asset.enabled;
-            [overlayView release];
         }
     }
 }
@@ -157,16 +148,6 @@
 		
 		frame.origin.x = frame.origin.x + frame.size.width + 4;
 	}
-}
-
-- (void)dealloc
-{
-	[_rowAssets release];
-    [_imageViewArray release];
-    [_durationViewArray release];
-    [_cameraViewArray release];
-    [_overlayViewArray release];
-	[super dealloc];
 }
 
 @end

@@ -14,14 +14,13 @@
 
 @interface ELCImagePickerController ()
 
-@property (nonatomic, retain) NSArray *disabledURLs;
+@property (nonatomic, strong) NSArray *disabledURLs;
 
 @end
 
 @implementation ELCImagePickerController
 
 @synthesize delegate = _myDelegate;
-@synthesize disabledURLs = _disabledURLs;
 
 - (void)cancelImagePicker
 {
@@ -43,7 +42,7 @@
     if (_disabledURLs == nil) {
         NSArray *disabledURLs = nil;
         if ([self.delegate respondsToSelector:@selector(elcImagePickerControllerDisabledURLs:)]) {
-            disabledURLs = [[self.delegate elcImagePickerControllerDisabledURLs:self] retain];
+            disabledURLs = [self.delegate elcImagePickerControllerDisabledURLs:self];
         }
         _disabledURLs = disabledURLs;
     }
@@ -77,8 +76,6 @@
 - (void)dealloc
 {
     NSLog(@"deallocing ELCImagePickerController");
-    [_disabledURLs release];
-    [super dealloc];
 }
 
 @end

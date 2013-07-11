@@ -7,8 +7,6 @@
 
 #import "ELCAssetTablePicker.h"
 #import "ELCAssetCell.h"
-#import "ELCAsset.h"
-#import "ELCAlbumPickerController.h"
 
 @interface ELCAssetTablePicker ()
 

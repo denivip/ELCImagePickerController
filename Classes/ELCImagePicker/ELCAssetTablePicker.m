@@ -31,7 +31,7 @@
     } else {
         UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
         [self.navigationItem setRightBarButtonItem:doneButtonItem];
-        [self.navigationItem setTitle:@"Loading..."];
+        [self.navigationItem setTitle:NSLocalizedString(@"Loading...", @"[Title bar title]")];
     }
 
 	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
@@ -87,7 +87,7 @@
                                               animated:NO];
             }
             
-            [self.navigationItem setTitle:self.singleSelection ? @"Pick Records" : @"Pick Records"];
+            [self.navigationItem setTitle:self.singleSelection ? NSLocalizedString(@"Pick Record", @"[Title bar title] single selection") : NSLocalizedString(@"Pick Records", @"[Title bar title] multiple selection")];
         });
     }
 }

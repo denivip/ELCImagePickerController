@@ -9,9 +9,9 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ELCAssetSelectionDelegate.h"
 
-@interface ELCAlbumPickerController : DVTableViewController <ELCAssetSelectionDelegate>
+@interface ELCAlbumPickerController : DVTableViewController
 
-@property (nonatomic, weak) id<ELCAssetSelectionDelegate> parent;
+@property (nonatomic, weak) id<ELCAssetSelectionDelegate> delegate;
 @property (nonatomic, strong) NSMutableArray *assetGroups;
 
 @end

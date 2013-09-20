@@ -6,7 +6,6 @@
 //
 
 #import "ELCAlbumPickerController.h"
-#import "ELCImagePickerController.h"
 #import "ELCAssetTablePicker.h"
 
 @interface ELCAlbumPickerController ()
@@ -26,7 +25,7 @@
 	
 	[self.navigationItem setTitle:NSLocalizedString(@"Loading...", @"[Title bar title]")];
 
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self.parent action:@selector(cancelImagePicker)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@checkselector0(self, cancelButton)];
 	[self.navigationItem setRightBarButtonItem:cancelButton];
 
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
@@ -62,7 +61,7 @@
                 }
 
                 // Reload albums
-                [self performSelectorOnMainThread:@selector(reloadTableView) withObject:nil waitUntilDone:YES];
+                [self performSelectorOnMainThread:@checkselector0(self, reloadTableView) withObject:nil waitUntilDone:YES];
             };
 
             // Group Enumerator Failure Block
@@ -88,31 +87,18 @@
 	[self.navigationItem setTitle:NSLocalizedString(@"Select an Album", @"[Title bar title]")];
 }
 
-- (void)selectedAssets:(NSArray*)assets
+- (void)cancelButton
 {
-	[_parent selectedAssets:assets];
-}
-
--(NSArray*)disabledURLs{
-    return [_parent disabledURLs];
+    [self.delegate elc_assetSelectionDidCancel:self];
 }
 
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 1;
-}
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
     return [self.assetGroups count];
 }
 
-
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";
@@ -139,11 +125,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	ELCAssetTablePicker *picker = [[ELCAssetTablePicker alloc] initWithNibName: nil bundle: nil];
-	picker.parent = self;
-
+	picker.delegate = self.delegate;
     picker.assetGroup = [self.assetGroups objectAtIndex:indexPath.row];
     [picker.assetGroup setAssetsFilter:[ALAssetsFilter allVideos]];
-    picker.disabledURLs = [self disabledURLs];
 	[self.navigationController pushViewController:picker animated:YES];
 }
 

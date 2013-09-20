@@ -11,6 +11,7 @@
 @interface ELCAssetTablePicker ()
 
 @property (nonatomic) int columns;
+@property (nonatomic, copy) NSSet *disabledURLs;
 
 @end
 
@@ -27,12 +28,15 @@
     if (self.immediateReturn) {
         
     } else {
-        UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
+        UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@checkselector(self, doneAction:)];
         [self.navigationItem setRightBarButtonItem:doneButtonItem];
         [self.navigationItem setTitle:NSLocalizedString(@"Loading...", @"[Title bar title]")];
     }
 
-	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
+    NSArray *disabledURLArray = [self.delegate elc_assetSelectionAssetURLsToDisableSelection:self];
+    self.disabledURLs = [NSSet setWithArray:disabledURLArray];
+
+	[self performSelectorInBackground:@checkselector0(self, preparePhotos) withObject:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -56,7 +60,6 @@
 - (void)preparePhotos
 {
     @autoreleasepool {
-        NSLog(@"enumerating photos");
 
         [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
 
@@ -70,7 +73,6 @@
             elcAsset.enabled = ![self.disabledURLs containsObject:url];
             [self.elcAssets addObject:elcAsset];
         }];
-        NSLog(@"done enumerating photos");
 
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
@@ -101,8 +103,8 @@
 			[selectedAssetsImages addObject:[elcAsset asset]];
 		}
 	}
-        
-    [self.parent selectedAssets:selectedAssetsImages];
+
+    [self.delegate elc_assetSelection:self didSelectAssets:selectedAssetsImages];
 }
 
 - (void)assetSelected:(id)asset
@@ -117,7 +119,7 @@
     }
     if (self.immediateReturn) {
         NSArray *singleAssetArray = [NSArray arrayWithObject:[asset asset]];
-        [(NSObject *)self.parent performSelector:@selector(selectedAssets:) withObject:singleAssetArray afterDelay:0];
+        [self.delegate elc_assetSelection:self didSelectAssets:singleAssetArray];
     }
 }
 

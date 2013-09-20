@@ -10,7 +10,16 @@
 
 @protocol ELCAssetSelectionDelegate <NSObject>
 
-- (void)selectedAssets:(NSArray *)assets;
-- (NSArray *)disabledURLs;
+- (void)elc_assetSelectionDidCancel:(id)assetSelection;
+
+/**
+ @param assets NSArray of ALAsset
+ */
+- (void)elc_assetSelection:(id)assetSelection didSelectAssets:(NSArray *)assets;
+
+/**
+ @return NSArray of NSString URLs of ALAssets
+ */
+- (NSArray *)elc_assetSelectionAssetURLsToDisableSelection:(id)assetSelection;
 
 @end

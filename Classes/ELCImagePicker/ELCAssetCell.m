@@ -26,7 +26,7 @@
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 	if(self) {
-        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTapped:)];
+        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@checkselector(self, cellTapped:)];
         [self addGestureRecognizer:tapRecognizer];
         
         NSMutableArray *mutableArray = [[NSMutableArray alloc] initWithCapacity:4];

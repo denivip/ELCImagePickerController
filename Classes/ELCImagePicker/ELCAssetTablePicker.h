@@ -12,13 +12,12 @@
 
 @interface ELCAssetTablePicker : UITableViewController <ELCAssetDelegate>
 
-@property (nonatomic, weak) id <ELCAssetSelectionDelegate> parent;
+@property (nonatomic, weak) id <ELCAssetSelectionDelegate> delegate;
 @property (nonatomic, strong) ALAssetsGroup *assetGroup;
 @property (nonatomic, strong) NSMutableArray *elcAssets;
 @property (nonatomic, strong) IBOutlet UILabel *selectedAssetsLabel;
 @property (nonatomic) BOOL singleSelection;
 @property (nonatomic) BOOL immediateReturn;
-@property (nonatomic, strong) NSArray *disabledURLs;
 
 - (int)totalSelectedAssets;
 - (void)preparePhotos;

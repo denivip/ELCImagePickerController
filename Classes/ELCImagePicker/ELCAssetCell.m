@@ -7,6 +7,7 @@
 
 #import "ELCAssetCell.h"
 #import "ELCAsset.h"
+#import "DVMessagesManager.h"
 
 @interface ELCAssetCell ()
 
@@ -114,6 +115,9 @@
                 asset.selected = !asset.selected;
                 UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
                 overlayView.hidden = !asset.selected;
+            }
+            else{
+                [[DVMessagesManager sharedInstance] showInformation:NSLocalizedString(@"This video is already imported", nil)];
             }
             break;
         }

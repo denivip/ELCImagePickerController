@@ -10,7 +10,7 @@
 #import "ELCAsset.h"
 #import "ELCAssetSelectionDelegate.h"
 
-@interface ELCAssetTablePicker : UITableViewController <ELCAssetDelegate>
+@interface ELCAssetTablePicker : DVTableViewController <ELCAssetDelegate>
 
 @property (nonatomic, weak) id <ELCAssetSelectionDelegate> delegate;
 @property (nonatomic, strong) ALAssetsGroup *assetGroup;

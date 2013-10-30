@@ -17,6 +17,14 @@
 
 @implementation ELCAssetTablePicker
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        self.titleScreen = @"Import Videos";
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];

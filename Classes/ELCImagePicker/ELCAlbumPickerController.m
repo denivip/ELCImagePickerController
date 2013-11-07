@@ -8,7 +8,7 @@
 #import "ELCAlbumPickerController.h"
 #import "ELCAssetTablePicker.h"
 
-@interface ELCAlbumPickerController ()
+@interface ELCAlbumPickerController () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) ALAssetsLibrary *library;
 
@@ -75,9 +75,17 @@
 
             // Group Enumerator Failure Block
             void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
-
-                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"[Alert title]") message:[NSString stringWithFormat:NSLocalizedString(@"Album Error: %@ - %@", @"[Alert error message]: {localized description} - {localized recovery suggestion}"), [error localizedDescription], [error localizedRecoverySuggestion]] delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
-                [alert show];
+                if ([ALAssetsLibrary authorizationStatus] != ALAuthorizationStatusAuthorized) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_IMPORT_FROM_LIBRARY", @"Import from Library")
+                                                                    message:NSLocalizedString(@"SETTINGS_IMPORT_ACCESS_DENIED", @"Message on importing videos when access to library is denied")
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
+                    [alert show];
+                } else {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"[Alert title]") message:[NSString stringWithFormat:NSLocalizedString(@"Album Error: %@ - %@", @"[Alert error message]: {localized description} - {localized recovery suggestion}"), [error localizedDescription], [error localizedRecoverySuggestion]] delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
+                    [alert show];
+                }
 
                 NSLog(@"A problem occured %@", [error description]);
             };
@@ -158,6 +166,14 @@
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
+}
+
+#pragma mark - Alert view delegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == alertView.cancelButtonIndex) {
+        [self.delegate elc_assetSelectionDidCancel:self];
+    }
 }
 
 @end

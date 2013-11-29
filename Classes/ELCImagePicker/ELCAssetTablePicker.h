@@ -12,6 +12,7 @@
 
 @interface ELCAssetTablePicker : DVTableViewController <ELCAssetDelegate>
 
+@property (nonatomic, strong) ALAssetsLibrary *library;
 @property (nonatomic, weak) id <ELCAssetSelectionDelegate> delegate;
 @property (nonatomic, strong) ALAssetsGroup *assetGroup;
 @property (nonatomic, strong) NSMutableArray *elcAssets;

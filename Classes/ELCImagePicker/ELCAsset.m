@@ -6,7 +6,6 @@
 //
 
 #import "ELCAsset.h"
-#import "ELCAssetTablePicker.h"
 
 @implementation ELCAsset
 

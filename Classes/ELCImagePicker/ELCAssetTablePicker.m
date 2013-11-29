@@ -112,7 +112,7 @@
 		}
 	}
 
-    [self.delegate elc_assetSelection:self didSelectAssets:selectedAssetsImages];
+    [self.delegate elc_assetSelection:self didSelectAssets:selectedAssetsImages library:self.library];
 }
 
 - (void)assetSelected:(id)asset
@@ -127,7 +127,7 @@
     }
     if (self.immediateReturn) {
         NSArray *singleAssetArray = [NSArray arrayWithObject:[asset asset]];
-        [self.delegate elc_assetSelection:self didSelectAssets:singleAssetArray];
+        [self.delegate elc_assetSelection:self didSelectAssets:singleAssetArray library:self.library];
     }
 }
 

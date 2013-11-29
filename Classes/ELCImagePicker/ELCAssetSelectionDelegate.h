@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @protocol ELCAssetSelectionDelegate <NSObject>
 
@@ -15,7 +16,7 @@
 /**
  @param assets NSArray of ALAsset
  */
-- (void)elc_assetSelection:(id)assetSelection didSelectAssets:(NSArray *)assets;
+- (void)elc_assetSelection:(id)assetSelection didSelectAssets:(NSArray *)assets library:(ALAssetsLibrary *)library;
 
 /**
  @return NSArray of NSString URLs of ALAssets

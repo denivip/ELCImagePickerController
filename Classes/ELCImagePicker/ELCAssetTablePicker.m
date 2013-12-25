@@ -10,7 +10,7 @@
 
 @interface ELCAssetTablePicker ()
 
-@property (nonatomic) int columns;
+@property (nonatomic) NSInteger columns;
 @property (nonatomic, copy) NSSet *disabledURLs;
 
 @end
@@ -85,8 +85,8 @@
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
             // scroll to bottom
-            int section = [self numberOfSectionsInTableView:self.tableView] - 1;
-            int row = [self tableView:self.tableView numberOfRowsInSection:section] - 1;
+            NSInteger section = [self numberOfSectionsInTableView:self.tableView] - 1;
+            NSInteger row = [self tableView:self.tableView numberOfRowsInSection:section] - 1;
             if (section >= 0 && row >= 0) {
                 NSIndexPath *ip = [NSIndexPath indexPathForRow:row
                                                      inSection:section];
@@ -147,8 +147,8 @@
 
 - (NSArray *)assetsForIndexPath:(NSIndexPath *)path
 {
-    int index = path.row * self.columns;
-    int length = MIN(self.columns, [self.elcAssets count] - index);
+    NSInteger index = path.row * self.columns;
+    NSInteger length = MIN(self.columns, [self.elcAssets count] - index);
     return [self.elcAssets subarrayWithRange:NSMakeRange(index, length)];
 }
 

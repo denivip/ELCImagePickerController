@@ -65,7 +65,7 @@
             imageView.image = [UIImage imageWithCGImage:asset.asset.thumbnail];
             UILabel *labelView = [_durationViewArray objectAtIndex:i];
             NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
-            labelView.text = [NSString stringWithFormat:@"%d:%02d", duration/60, duration%60];
+            labelView.text = [NSString stringWithFormat:@"%lu:%02lu", duration/60, duration%60];
             
         } else {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithCGImage:asset.asset.thumbnail]];
@@ -77,7 +77,7 @@
             labelView.textColor = [UIColor whiteColor];
             labelView.font = [UIFont systemFontOfSize:14.f];
             NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
-            labelView.text = [NSString stringWithFormat:@"%d:%02d", duration/60, duration%60];
+            labelView.text = [NSString stringWithFormat:@"%lu:%02lu", duration/60, duration%60];
             [_durationViewArray addObject:labelView];
         
             UIImageView *cameraView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_cam"]];

@@ -103,7 +103,11 @@
 - (void)reloadTableView
 {
 	[self.tableView reloadData];
-	[self.navigationItem setTitle:NSLocalizedString(@"Select an Album", @"[Title bar title]")];
+    if (self.assetsType == ELCAlbumPickerAssetsTypePhoto) {
+        [self.navigationItem setTitle:NSLocalizedString(@"IMPORT_LIBRARY_PHOTOS", @"[Title bar title]")];
+    } else {
+        [self.navigationItem setTitle:NSLocalizedString(@"IMPORT_LIBRARY_VIDEOS", @"[Title bar title]")];
+    }
 }
 
 - (void)cancelButton

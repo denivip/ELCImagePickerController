@@ -95,7 +95,11 @@
                                               animated:NO];
             }
             
-            [self.navigationItem setTitle:self.singleSelection ? NSLocalizedString(@"Pick Record", @"[Title bar title] single selection") : NSLocalizedString(@"Pick Records", @"[Title bar title] multiple selection")];
+            if (self.elcAssets.count && [((ELCAsset *)[self.elcAssets objectAtIndex:0]).asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
+                [self.navigationItem setTitle:self.singleSelection ? NSLocalizedString(@"IMPORT_LIBRARY_PHOTO_SINGLE", @"[Title bar title] single selection") : NSLocalizedString(@"IMPORT_LIBRARY_PHOTO_MANY", @"[Title bar title] multiple selection")];
+            } else {
+                [self.navigationItem setTitle:self.singleSelection ? NSLocalizedString(@"IMPORT_LIBRARY_VIDEO_SINGLE", @"[Title bar title] single selection") : NSLocalizedString(@"IMPORT_LIBRARY_VIDEO_MANY", @"[Title bar title] multiple selection")];
+            }
         });
     }
 }

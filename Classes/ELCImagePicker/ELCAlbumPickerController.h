@@ -9,10 +9,16 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ELCAssetSelectionDelegate.h"
 
+typedef NS_ENUM(NSUInteger, ELCAlbumPickerAssetsType) {
+    ELCAlbumPickerAssetsTypeVideo,
+    ELCAlbumPickerAssetsTypePhoto
+};
+
 @interface ELCAlbumPickerController : DVTableViewController
 
 @property (nonatomic, weak) id<ELCAssetSelectionDelegate> delegate;
 @property (nonatomic, strong) NSMutableArray *assetGroups;
+@property (nonatomic) ELCAlbumPickerAssetsType assetsType;
 
 @end
 

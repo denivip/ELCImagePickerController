@@ -11,6 +11,7 @@
 @interface ELCAlbumPickerController () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) ALAssetsLibrary *library;
+@property (nonatomic, strong) ALAssetsFilter *assetsFilter;
 
 @end
 
@@ -23,6 +24,7 @@
 {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         self.titleScreen = @"Import from Album";
+        self.assetsType = ELCAlbumPickerAssetsTypeVideo;
     }
     return self;
 }
@@ -53,7 +55,7 @@
                 if (group == nil) {
                     return;
                 }
-                [group setAssetsFilter:[ALAssetsFilter allVideos]];
+                [group setAssetsFilter:self.assetsFilter];
                 if ([group numberOfAssets] == 0) {
                     return;
                 }
@@ -145,7 +147,7 @@
     picker.library = self.library;
 	picker.delegate = self.delegate;
     picker.assetGroup = [self.assetGroups objectAtIndex:indexPath.row];
-    [picker.assetGroup setAssetsFilter:[ALAssetsFilter allVideos]];
+    [picker.assetGroup setAssetsFilter:self.assetsFilter];
 	[self.navigationController pushViewController:picker animated:YES];
 }
 
@@ -174,6 +176,14 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == alertView.cancelButtonIndex) {
         [self.delegate elc_assetSelectionDidCancel:self];
+    }
+}
+
+- (ALAssetsFilter *)assetsFilter {
+    if (self.assetsType == ELCAlbumPickerAssetsTypePhoto) {
+        return [ALAssetsFilter allPhotos];
+    } else {
+        return [ALAssetsFilter allVideos];
     }
 }
 

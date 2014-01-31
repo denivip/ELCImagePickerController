@@ -63,25 +63,28 @@
         if (i < [_imageViewArray count]) {
             UIImageView *imageView = [_imageViewArray objectAtIndex:i];
             imageView.image = [UIImage imageWithCGImage:asset.asset.thumbnail];
-            UILabel *labelView = [_durationViewArray objectAtIndex:i];
-            NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
-            labelView.text = [NSString stringWithFormat:@"%lu:%02lu", (unsigned long)duration/60, (unsigned long)duration%60];
-            
+            if ([asset.asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo) {
+                UILabel *labelView = [_durationViewArray objectAtIndex:i];
+                NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
+                labelView.text = [NSString stringWithFormat:@"%lu:%02lu", (unsigned long)duration/60, (unsigned long)duration%60];
+            }
         } else {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithCGImage:asset.asset.thumbnail]];
             [_imageViewArray addObject:imageView];
         
-            UILabel *labelView = [[UILabel alloc] init];
-            labelView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.7f];
-            labelView.textAlignment = NSTextAlignmentRight;
-            labelView.textColor = [UIColor whiteColor];
-            labelView.font = [UIFont systemFontOfSize:14.f];
-            NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
-            labelView.text = [NSString stringWithFormat:@"%lu:%02lu", (unsigned long)duration/60, (unsigned long)duration%60];
-            [_durationViewArray addObject:labelView];
-        
-            UIImageView *cameraView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_cam"]];
-            [_cameraViewArray addObject:cameraView];
+            if ([asset.asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo) {
+                UILabel *labelView = [[UILabel alloc] init];
+                labelView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.7f];
+                labelView.textAlignment = NSTextAlignmentRight;
+                labelView.textColor = [UIColor whiteColor];
+                labelView.font = [UIFont systemFontOfSize:14.f];
+                NSUInteger duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] integerValue];
+                labelView.text = [NSString stringWithFormat:@"%lu:%02lu", (unsigned long)duration/60, (unsigned long)duration%60];
+                [_durationViewArray addObject:labelView];
+            
+                UIImageView *cameraView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_cam"]];
+                [_cameraViewArray addObject:cameraView];
+            }
         }
         
         if (i < [_overlayViewArray count]) {
@@ -134,22 +137,26 @@
 	CGRect frameCamera = CGRectMake(5, 5, 16, 10);
 	
 	for (int i = 0; i < [_rowAssets count]; ++i) {
+        ELCAsset *asset = [_rowAssets objectAtIndex:i];
+        
 		UIImageView *imageView = [_imageViewArray objectAtIndex:i];
 		[imageView setFrame:frame];
 		[self.contentView addSubview:imageView];
         
-        UILabel *durationView = [_durationViewArray objectAtIndex:i];
-        [durationView setFrame:frameDuration];
-        [imageView addSubview:durationView];
-		
-        UIImageView *cameraView = [_cameraViewArray objectAtIndex:i];
-        [cameraView setFrame:frameCamera];
-        [durationView addSubview:cameraView];
+        if ([asset.asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo) {
+            UILabel *durationView = [_durationViewArray objectAtIndex:i];
+            [durationView setFrame:frameDuration];
+            [imageView addSubview:durationView];
+            
+            UIImageView *cameraView = [_cameraViewArray objectAtIndex:i];
+            [cameraView setFrame:frameCamera];
+            [durationView addSubview:cameraView];
+        }
 		
         UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
         [overlayView setFrame:frame];
         [self.contentView addSubview:overlayView];
-		
+        
 		frame.origin.x = frame.origin.x + frame.size.width + 4;
 	}
 }

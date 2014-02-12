@@ -9,6 +9,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ELCAsset.h"
 #import "ELCAssetSelectionDelegate.h"
+#import "DVTableViewController.h"
 
 @interface ELCAssetTablePicker : DVTableViewController <ELCAssetDelegate>
 

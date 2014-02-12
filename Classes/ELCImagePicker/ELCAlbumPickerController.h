@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ELCAssetSelectionDelegate.h"
+#import "DVTableViewController.h"
 
 typedef NS_ENUM(NSUInteger, ELCAlbumPickerAssetsType) {
     ELCAlbumPickerAssetsTypeVideo,

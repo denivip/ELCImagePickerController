@@ -81,7 +81,7 @@
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_IMPORT_FROM_LIBRARY", @"Import from Library")
                                                                     message:NSLocalizedString(@"SETTINGS_IMPORT_ACCESS_DENIED", @"Message on importing videos when access to library is denied")
                                                                    delegate:self
-                                                          cancelButtonTitle:@"OK"
+                                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
                                                           otherButtonTitles:nil];
                     [alert show];
                 } else {

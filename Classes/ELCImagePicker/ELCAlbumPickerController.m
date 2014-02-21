@@ -76,7 +76,7 @@
             };
 
             // Group Enumerator Failure Block
-            void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
+            void (^assetGroupEnumeratorFailure)(NSError *) = ^(NSError *error) {
                 if ([ALAssetsLibrary authorizationStatus] != ALAuthorizationStatusAuthorized) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_IMPORT_FROM_LIBRARY", @"Import from Library")
                                                                     message:NSLocalizedString(@"SETTINGS_IMPORT_ACCESS_DENIED", @"Message on importing videos when access to library is denied")
@@ -95,7 +95,7 @@
             // Enumerate Albums
             [self.library enumerateGroupsWithTypes:ALAssetsGroupAll
                                         usingBlock:assetGroupEnumerator 
-                                      failureBlock:assetGroupEnumberatorFailure];
+                                      failureBlock:assetGroupEnumeratorFailure];
         }
     });
 }

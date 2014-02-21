@@ -56,7 +56,7 @@
         [alert release];
         
         NSLog(@"A problem occured %@", [error description]);
-        // an error here means that the asset groups were inaccessable.
+        // an error here means that the asset groups were inaccessible.
         // Maybe the user or system preferences refused access.
     }];
 }
@@ -117,12 +117,12 @@
         UIImage *image = [dict objectForKey:UIImagePickerControllerOriginalImage];
         [images addObject:image];
         
-		UIImageView *imageview = [[UIImageView alloc] initWithImage:image];
-		[imageview setContentMode:UIViewContentModeScaleAspectFit];
-		imageview.frame = workingFrame;
+		UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+		[imageView setContentMode:UIViewContentModeScaleAspectFit];
+        imageView.frame = workingFrame;
 		
-		[_scrollView addSubview:imageview];
-		[imageview release];
+		[_scrollView addSubview:imageView];
+		[imageView release];
 		
 		workingFrame.origin.x = workingFrame.origin.x + workingFrame.size.width;
 	}

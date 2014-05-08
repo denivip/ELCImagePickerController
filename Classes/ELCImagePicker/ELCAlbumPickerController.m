@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) ALAssetsLibrary *library;
 @property (nonatomic, strong) ALAssetsFilter *assetsFilter;
+@property (nonatomic, weak) UIAlertView *alertView;
 
 @end
 
@@ -29,6 +30,10 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _alertView.delegate = nil;
+}
 
 - (void)viewDidLoad
 {
@@ -84,9 +89,11 @@
                                                           cancelButtonTitle:NSLocalizedString(@"OK", nil)
                                                           otherButtonTitles:nil];
                     [alert show];
+                    self.alertView = alert;
                 } else {
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"[Alert title]") message:[NSString stringWithFormat:NSLocalizedString(@"Album Error: %@ - %@", @"[Alert error message]: {localized description} - {localized recovery suggestion}"), [error localizedDescription], [error localizedRecoverySuggestion]] delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
                     [alert show];
+                    self.alertView = alert;
                 }
 
                 NSLog(@"A problem occured %@", [error description]);

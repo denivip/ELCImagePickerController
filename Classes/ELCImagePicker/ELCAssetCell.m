@@ -8,6 +8,7 @@
 #import "ELCAssetCell.h"
 #import "ELCAsset.h"
 #import "DVMessagesManager.h"
+#import "DVGTogetherAppearance.h"
 
 @interface ELCAssetCell ()
 
@@ -27,6 +28,8 @@
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 	if(self) {
+        self.backgroundColor = [UIColor togetherBackgroundColor];
+
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@checkselector(self, cellTapped:)];
         [self addGestureRecognizer:tapRecognizer];
         
@@ -74,7 +77,7 @@
         
             if ([asset.asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo) {
                 UILabel *labelView = [[UILabel alloc] init];
-                labelView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.7f];
+                labelView.backgroundColor = [[UIColor togetherHighlightedCellBackgroundColor] colorWithAlphaComponent:0.5f];
                 labelView.textAlignment = NSTextAlignmentRight;
                 labelView.textColor = [UIColor whiteColor];
                 labelView.font = [UIFont systemFontOfSize:14.f];

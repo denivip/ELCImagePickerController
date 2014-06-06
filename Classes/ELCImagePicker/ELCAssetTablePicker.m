@@ -7,6 +7,7 @@
 
 #import "ELCAssetTablePicker.h"
 #import "ELCAssetCell.h"
+#import "DVGTogetherAppearance.h"
 
 @interface ELCAssetTablePicker ()
 
@@ -29,6 +30,7 @@
 {
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	[self.tableView setAllowsSelection:NO];
+    self.tableView.backgroundColor = [UIColor togetherBackgroundColor];
 
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
     self.elcAssets = tempArray;

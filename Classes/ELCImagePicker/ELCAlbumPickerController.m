@@ -7,6 +7,8 @@
 
 #import "ELCAlbumPickerController.h"
 #import "ELCAssetTablePicker.h"
+#import "DVGTogetherAppearance.h"
+#import "DVGTableViewCell.h"
 
 @interface ELCAlbumPickerController () <UIAlertViewDelegate>
 
@@ -38,6 +40,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.tableView.backgroundColor = [UIColor togetherBackgroundColor];
+    self.tableView.separatorColor = [UIColor togetherCellSeparatorColor];
 	
 	[self.navigationItem setTitle:NSLocalizedString(@"Loading...", @"[Title bar title]")];
 
@@ -135,7 +140,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[DVGTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     // Get count

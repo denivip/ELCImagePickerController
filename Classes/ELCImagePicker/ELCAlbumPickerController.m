@@ -13,7 +13,7 @@
 @interface ELCAlbumPickerController () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) ALAssetsLibrary *library;
-@property (nonatomic, strong) ALAssetsFilter *assetsFilter;
+@property (nonatomic, readonly, strong) ALAssetsFilter *assetsFilter;
 @property (nonatomic, weak) UIAlertView *alertView;
 
 @end

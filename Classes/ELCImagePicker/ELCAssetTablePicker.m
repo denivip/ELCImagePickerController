@@ -47,6 +47,8 @@
     self.disabledURLs = [NSSet setWithArray:disabledURLArray];
 
 	[self performSelectorInBackground:@checkselector0(self, preparePhotos) withObject:nil];
+
+    [super viewDidLoad];
 }
 
 - (void)viewWillAppear:(BOOL)animated

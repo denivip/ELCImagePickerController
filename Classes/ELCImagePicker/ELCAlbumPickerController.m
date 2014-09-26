@@ -70,11 +70,8 @@
                     return;
                 }
                 // added fix for camera albums order
-                NSString *sGroupPropertyName = (NSString *)[group valueForProperty:ALAssetsGroupPropertyName];
-                NSUInteger nType = [[group valueForProperty:ALAssetsGroupPropertyType] intValue];
-
-
-                if ([[sGroupPropertyName lowercaseString] isEqualToString:@"camera roll"] && nType == ALAssetsGroupSavedPhotos) {
+                ALAssetsGroupType nType = [[group valueForProperty:ALAssetsGroupPropertyType] intValue];
+                if (nType == ALAssetsGroupSavedPhotos) {
                     [self.assetGroups insertObject:group atIndex:0];
                 }
                 else {
@@ -147,7 +144,13 @@
     ALAssetsGroup *g = (ALAssetsGroup*)[self.assetGroups objectAtIndex:indexPath.row];
     NSInteger gCount = [g numberOfAssets];
     
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%ld)",[g valueForProperty:ALAssetsGroupPropertyName], (long)gCount];
+    NSString *sGroupPropertyName = [g valueForProperty:ALAssetsGroupPropertyName];
+    if ([[sGroupPropertyName lowercaseString] isEqualToString:@"photos"]) {
+        // On iOS 8 change Photos to Videos.
+        sGroupPropertyName = NSLocalizedString(@"VIDEOS_GROUP_TITLE", nil);
+    }
+
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%ld)", sGroupPropertyName, (long)gCount];
     [cell.imageView setImage:[UIImage imageWithCGImage:[(ALAssetsGroup*)[self.assetGroups objectAtIndex:indexPath.row] posterImage]]];
 	[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 	

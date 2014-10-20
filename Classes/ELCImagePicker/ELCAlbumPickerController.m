@@ -124,6 +124,18 @@
     [self.delegate elc_assetSelectionDidCancel:self];
 }
 
+- (NSString *)groupName:(ALAssetsGroup *)g
+{
+    NSString *sGroupPropertyName = [g valueForProperty:ALAssetsGroupPropertyName];
+    if ([[sGroupPropertyName lowercaseString] isEqualToString:@"photos"] &&
+        self.assetsType == ELCAlbumPickerAssetsTypeVideo) {
+        // On iOS 8 change Photos to Videos.
+        sGroupPropertyName = NSLocalizedString(@"VIDEOS_GROUP_TITLE", nil);
+    }
+
+    return sGroupPropertyName;
+}
+
 #pragma mark -
 #pragma mark Table view data source
 
@@ -143,12 +155,7 @@
     // Get count
     ALAssetsGroup *g = (ALAssetsGroup*)[self.assetGroups objectAtIndex:indexPath.row];
     NSInteger gCount = [g numberOfAssets];
-    
-    NSString *sGroupPropertyName = [g valueForProperty:ALAssetsGroupPropertyName];
-    if ([[sGroupPropertyName lowercaseString] isEqualToString:@"photos"]) {
-        // On iOS 8 change Photos to Videos.
-        sGroupPropertyName = NSLocalizedString(@"VIDEOS_GROUP_TITLE", nil);
-    }
+    NSString *sGroupPropertyName = [self groupName:g];
 
     cell.textLabel.text = [NSString stringWithFormat:@"%@ (%ld)", sGroupPropertyName, (long)gCount];
     [cell.imageView setImage:[UIImage imageWithCGImage:[(ALAssetsGroup*)[self.assetGroups objectAtIndex:indexPath.row] posterImage]]];

@@ -9,8 +9,11 @@
 #import "ELCAssetTablePicker.h"
 #import "DVGTogetherAppearance.h"
 #import "DVGTableViewCell.h"
+#import "DVIntroductionInfoViewController.h"
 
-@interface ELCAlbumPickerController () <UIAlertViewDelegate>
+@interface ELCAlbumPickerController ()
+<UIAlertViewDelegate,
+DVIntroductionInfoViewControllerDelegate>
 
 @property (nonatomic, strong) ALAssetsLibrary *library;
 @property (nonatomic, readonly, strong) ALAssetsFilter *assetsFilter;
@@ -85,13 +88,10 @@
             // Group Enumerator Failure Block
             void (^assetGroupEnumeratorFailure)(NSError *) = ^(NSError *error) {
                 if ([ALAssetsLibrary authorizationStatus] != ALAuthorizationStatusAuthorized) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_IMPORT_FROM_LIBRARY", @"Import from Library")
-                                                                    message:NSLocalizedString(@"SETTINGS_IMPORT_ACCESS_DENIED", @"Message on importing videos when access to library is denied")
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                                          otherButtonTitles:nil];
-                    [alert show];
-                    self.alertView = alert;
+                    DVIntroductionInfoViewController *infoController = [[DVIntroductionInfoViewController alloc] init];
+                    infoController.type = DVIntroductionInfoTypePhoto;
+                    infoController.delegate = self;
+                    [self.navigationController pushViewController:infoController animated:YES];
                 } else {
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"[Alert title]") message:[NSString stringWithFormat:NSLocalizedString(@"Album Error: %@ - %@", @"[Alert error message]: {localized description} - {localized recovery suggestion}"), [error localizedDescription], [error localizedRecoverySuggestion]] delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
                     [alert show];
@@ -196,6 +196,13 @@
     } else {
         return [ALAssetsFilter allVideos];
     }
+}
+
+#pragma mark - DVIntroductionViewControllerDelegate
+
+- (void)infoControllerDidDisappear:(DVIntroductionInfoViewController *)controller withType:(DVIntroductionInfoType)type {
+    [self.navigationController popViewControllerAnimated:NO];
+    [self.delegate elc_assetSelectionDidCancel:self];
 }
 
 @end

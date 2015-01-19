@@ -54,7 +54,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.columns = self.view.bounds.size.width / 80;
+    NSUInteger width = CGRectGetWidth(self.view.bounds)/4;
+    self.columns = self.view.bounds.size.width / width;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -65,7 +66,8 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    self.columns = self.view.bounds.size.width / 80;
+    NSUInteger width = CGRectGetWidth(self.view.bounds)/4;
+    self.columns = self.view.bounds.size.width / width;
     [self.tableView reloadData];
 }
 
@@ -179,7 +181,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-	return 79;
+    NSUInteger width = CGRectGetWidth(self.view.bounds)/4;
+    return width - 1;
 }
 
 - (int)totalSelectedAssets {

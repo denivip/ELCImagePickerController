@@ -179,7 +179,8 @@ DVIntroductionInfoViewControllerDelegate>
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	return 57;
+    NSUInteger width = CGRectGetWidth(tableView.bounds)/4 - 5;
+    return width - 18;
 }
 
 #pragma mark - Alert view delegate

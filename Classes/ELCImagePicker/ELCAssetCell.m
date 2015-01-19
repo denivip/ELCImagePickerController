@@ -112,7 +112,8 @@
     CGPoint point = [tapRecognizer locationInView:self];
     CGFloat startX = 4;
     
-	CGRect frame = CGRectMake(startX, 2, 75, 75);
+    NSUInteger width = CGRectGetWidth(self.bounds)/4 - 5;
+    CGRect frame = CGRectMake(startX, 2, width, width);
 	
 	for (int i = 0; i < [_rowAssets count]; ++i) {
         if (CGRectContainsPoint(frame, point)) {
@@ -142,8 +143,9 @@
 {    
     CGFloat startX = 4;
     
-	CGRect frame = CGRectMake(startX, 2, 75, 75);
-	CGRect frameDuration = CGRectMake(0, 55, 75, 20);
+    NSUInteger width = CGRectGetWidth(self.bounds)/4 - 5;
+	CGRect frame = CGRectMake(startX, 2, width, width);
+	CGRect frameDuration = CGRectMake(0, width - 20, width, 20);
 	CGRect frameCamera = CGRectMake(5, 5, 16, 10);
 	
 	for (int i = 0; i < [_rowAssets count]; ++i) {

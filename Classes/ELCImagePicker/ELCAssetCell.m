@@ -117,14 +117,17 @@
 	for (int i = 0; i < [_rowAssets count]; ++i) {
         if (CGRectContainsPoint(frame, point)) {
             ELCAsset *asset = [_rowAssets objectAtIndex:i];
-            CGFloat duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] floatValue];
-            if (asset.enabled && duration < 0.5f) {
-                [[DVMessagesManager sharedInstance] showInformation:NSLocalizedString(@"This video is too short", nil)];
-            }
-            else if (asset.enabled) {
-                asset.selected = !asset.selected;
-                UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
-                overlayView.hidden = !asset.selected;
+            if (asset.enabled) {
+                NSString *type = [asset.asset valueForProperty:ALAssetPropertyType];
+                CGFloat duration = [[asset.asset valueForProperty:ALAssetPropertyDuration] floatValue];
+                if ([type isEqualToString:ALAssetTypeVideo] && duration < 0.5) {
+                    [[DVMessagesManager sharedInstance] showInformation:NSLocalizedString(@"This video is too short", nil)];
+                }
+                else {
+                    asset.selected = !asset.selected;
+                    UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
+                    overlayView.hidden = !asset.selected;
+                }
             }
             else{
                 [[DVMessagesManager sharedInstance] showInformation:NSLocalizedString(@"This video is already imported", nil)];

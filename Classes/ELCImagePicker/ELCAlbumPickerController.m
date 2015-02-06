@@ -88,10 +88,11 @@ DVIntroductionInfoViewControllerDelegate>
             // Group Enumerator Failure Block
             void (^assetGroupEnumeratorFailure)(NSError *) = ^(NSError *error) {
                 if ([ALAssetsLibrary authorizationStatus] != ALAuthorizationStatusAuthorized) {
-                    DVIntroductionInfoViewController *infoController = [[DVIntroductionInfoViewController alloc] init];
-                    infoController.type = DVIntroductionInfoTypePhoto;
-                    infoController.delegate = self;
-                    [self.navigationController pushViewController:infoController animated:YES];
+                    //DVIntroductionInfoViewController *infoController = [[DVIntroductionInfoViewController alloc] init];
+                    //infoController.type = DVIntroductionInfoTypePhoto;
+                    //infoController.delegate = self;
+                    //[self.navigationController pushViewController:infoController animated:YES];
+                    [DVIntroductionInfoViewController showPermissionsErrorAtController:self];
                 } else {
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"[Alert title]") message:[NSString stringWithFormat:NSLocalizedString(@"Album Error: %@ - %@", @"[Alert error message]: {localized description} - {localized recovery suggestion}"), [error localizedDescription], [error localizedRecoverySuggestion]] delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
                     [alert show];
@@ -200,6 +201,9 @@ DVIntroductionInfoViewControllerDelegate>
 }
 
 #pragma mark - DVIntroductionViewControllerDelegate
+- (void)infoControllerDidCancelled:(DVIntroductionInfoViewController *)controller withType:(DVIntroductionInfoType)type {
+    [self infoControllerDidDisappear:controller withType:type];
+}
 
 - (void)infoControllerDidDisappear:(DVIntroductionInfoViewController *)controller withType:(DVIntroductionInfoType)type {
     [self.navigationController popViewControllerAnimated:NO];

@@ -137,29 +137,31 @@ static float kELCSectionTitleTopSpace = 20.0f;
         }
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
-            // scroll to bottom
-            NSInteger section = [self numberOfSectionsInTableView:self.tableView] - 1;
-            NSInteger row = [self tableView:self.tableView numberOfRowsInSection:section] - 1;
-            if (section >= 0 && row >= 0) {
-                NSIndexPath *ip = [NSIndexPath indexPathForRow:row
-                                                     inSection:section];
-                [self.tableView scrollToRowAtIndexPath:ip
-                                      atScrollPosition:UITableViewScrollPositionBottom
-                                              animated:NO];
-            }
-            
             if (self.elcAssetsBySection.count && [[self.elcAssetsBySection objectAtIndex:0] count]
                 && [((ELCAsset *)[[self.elcAssetsBySection objectAtIndex:0] objectAtIndex:0]).asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
                 [self.navigationItem setTitle:self.singleSelection ? NSLocalizedString(@"IMPORT_LIBRARY_PHOTO_SINGLE", @"[Title bar title] single selection") : NSLocalizedString(@"IMPORT_LIBRARY_PHOTO_MANY", @"[Title bar title] multiple selection")];
             } else {
                 [self.navigationItem setTitle:self.singleSelection ? NSLocalizedString(@"IMPORT_LIBRARY_VIDEO_SINGLE", @"[Title bar title] single selection") : NSLocalizedString(@"IMPORT_LIBRARY_VIDEO_MANY", @"[Title bar title] multiple selection")];
             }
+            
+            if(!self.groupByDate){
+                // scroll to bottom
+                NSInteger section = [self numberOfSectionsInTableView:self.tableView] - 1;
+                NSInteger row = [self tableView:self.tableView numberOfRowsInSection:section] - 1;
+                if (section >= 0 && row >= 0) {
+                    NSIndexPath *ip = [NSIndexPath indexPathForRow:row
+                                                         inSection:section];
+                    [self.tableView scrollToRowAtIndexPath:ip
+                                          atScrollPosition:UITableViewScrollPositionBottom
+                                                  animated:NO];
+                }
+            }
         });
     }
 }
 
 - (void)doneAction:(id)sender
-{	
+{
 	NSMutableArray *selectedAssetsImages = [[NSMutableArray alloc] init];
     for(NSArray *assets in self.elcAssetsBySection) {
         for(ELCAsset *elcAsset in assets) {

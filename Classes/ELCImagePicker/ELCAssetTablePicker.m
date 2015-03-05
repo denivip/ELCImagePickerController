@@ -11,12 +11,11 @@
 #import "DVGTogetherAppearance.h"
 
 static float kELCSectionTitleHeight = 20.0f;
-static float kELCSectionTitleTopSpace = 20.0f;
-@interface ELCAssetTablePicker ()
+static float kELCSectionTitleTopSpace = 22.0f;
 
+@interface ELCAssetTablePicker ()
 @property (nonatomic) NSInteger columns;
 @property (nonatomic, copy) NSSet *disabledURLs;
-
 @end
 
 @implementation ELCAssetTablePicker

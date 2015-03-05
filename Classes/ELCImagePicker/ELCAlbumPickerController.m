@@ -10,14 +10,16 @@
 #import "DVGTogetherAppearance.h"
 #import "DVGTableViewCell.h"
 #import "DVIntroductionInfoViewController.h"
+#import "PSTAlertController.h"
 
-@interface ELCAlbumPickerController ()
-<UIAlertViewDelegate,
-DVIntroductionInfoViewControllerDelegate>
+@interface ELCAlbumPickerController ()<
+ //UIAlertViewDelegate,
+ DVIntroductionInfoViewControllerDelegate
+>
 
 @property (nonatomic, strong) ALAssetsLibrary *library;
 @property (nonatomic, readonly, strong) ALAssetsFilter *assetsFilter;
-@property (nonatomic, weak) UIAlertView *alertView;
+//@property (nonatomic, weak) UIAlertView *alertView;
 
 @end
 
@@ -37,7 +39,7 @@ DVIntroductionInfoViewControllerDelegate>
 
 - (void)dealloc
 {
-    _alertView.delegate = nil;
+    //_alertView.delegate = nil;
 }
 
 - (void)viewDidLoad
@@ -94,9 +96,15 @@ DVIntroductionInfoViewControllerDelegate>
                     //[self.navigationController pushViewController:infoController animated:YES];
                     [DVIntroductionInfoViewController showPermissionsErrorAtController:self];
                 } else {
-                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"[Alert title]") message:[NSString stringWithFormat:NSLocalizedString(@"Album Error: %@ - %@", @"[Alert error message]: {localized description} - {localized recovery suggestion}"), [error localizedDescription], [error localizedRecoverySuggestion]] delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
-                    [alert show];
-                    self.alertView = alert;
+                    //UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"[Alert title]") message:[NSString stringWithFormat:NSLocalizedString(@"Album Error: %@ - %@", @"[Alert error message]: {localized description} - {localized recovery suggestion}"), [error localizedDescription], [error localizedRecoverySuggestion]] delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
+                    //[alert show];
+                    //self.alertView = alert;
+                    PSTAlertController* alert = [PSTAlertController presentDismissableAlertWithTitle:NSLocalizedString(@"Error", @"[Alert title]")
+                                                                 message:[NSString stringWithFormat:NSLocalizedString(@"Album Error: %@ - %@", @"[Alert error message]: {localized description} - {localized recovery suggestion}"), [error localizedDescription], [error localizedRecoverySuggestion]]
+                                                              controller:nil];
+                    [alert addDidDismissBlock:^(PSTAlertAction *action) {
+                        [self.delegate elc_assetSelectionDidCancel:self];
+                    }];
                 }
 
                 NSLog(@"A problem occured %@", [error description]);
@@ -186,11 +194,11 @@ DVIntroductionInfoViewControllerDelegate>
 
 #pragma mark - Alert view delegate
 
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == alertView.cancelButtonIndex) {
-        [self.delegate elc_assetSelectionDidCancel:self];
-    }
-}
+//-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+//    if (buttonIndex == alertView.cancelButtonIndex) {
+//        [self.delegate elc_assetSelectionDidCancel:self];
+//    }
+//}
 
 - (ALAssetsFilter *)assetsFilter {
     if (self.assetsType == ELCAlbumPickerAssetsTypePhoto) {

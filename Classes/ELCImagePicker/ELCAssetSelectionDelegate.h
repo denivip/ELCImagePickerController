@@ -23,4 +23,8 @@
  */
 - (NSArray *)elc_assetSelectionAssetURLsToDisableSelection:(id)assetSelection;
 
+@optional
+- (void)elc_assetToggle:(id)assetSelection didSelectAssets:(NSArray *)assets library:(ALAssetsLibrary *)library;
+
+
 @end

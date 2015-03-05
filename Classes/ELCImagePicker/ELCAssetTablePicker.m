@@ -125,7 +125,7 @@
     [self.delegate elc_assetSelection:self didSelectAssets:selectedAssetsImages library:self.library];
 }
 
-- (void)assetSelected:(id)asset
+- (void)assetSelected:(ELCAsset*)asset
 {
     if (self.singleSelection) {
 
@@ -139,6 +139,10 @@
         NSArray *singleAssetArray = [NSArray arrayWithObject:[asset asset]];
         [self.delegate elc_assetSelection:self didSelectAssets:singleAssetArray library:self.library];
     }
+}
+
+- (void)assetDeselected:(ELCAsset*)asset
+{
 }
 
 #pragma mark UITableViewDataSource Delegate Methods

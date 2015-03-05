@@ -9,8 +9,9 @@
 
 
 @interface ELCAssetCell : UITableViewCell
-
 - (id)initWithAssets:(NSArray *)assets reuseIdentifier:(NSString *)identifier;
 - (void)setAssets:(NSArray *)assets;
 
++ (void)setDefaultOverlayImageName:(NSString*)overlayImage shouldDimCell:(BOOL)shouldDim;
++ (void)setDefaultDisabledImageName:(NSString*)overlayImage;
 @end

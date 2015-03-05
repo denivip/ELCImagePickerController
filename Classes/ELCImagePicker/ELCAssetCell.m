@@ -10,6 +10,10 @@
 #import "DVMessagesManager.h"
 #import "DVGTogetherAppearance.h"
 
+static BOOL defaultDimsCellOnSelection = NO;
+static NSString* defaultOverlayImageName = @"Overlay";
+static NSString* defaultDisabledImageName = @"Overlay-disabled";
+
 @interface ELCAssetCell ()
 
 @property (nonatomic, strong) NSArray *rowAssets;
@@ -23,7 +27,6 @@
 @implementation ELCAssetCell
 
 @synthesize rowAssets = _rowAssets;
-
 - (id)initWithAssets:(NSArray *)assets reuseIdentifier:(NSString *)identifier
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -50,6 +53,15 @@
 	return self;
 }
 
++ (void)setDefaultOverlayImageName:(NSString*)overlayImage shouldDimCell:(BOOL)shouldDim {
+    defaultOverlayImageName = overlayImage;
+    defaultDimsCellOnSelection = shouldDim;
+}
+
++ (void)setDefaultDisabledImageName:(NSString*)overlayImage {
+    defaultDisabledImageName = overlayImage;
+}
+
 - (void)setAssets:(NSArray *)assets
 {
     self.rowAssets = assets;
@@ -62,7 +74,6 @@
     for (int i = 0; i < [_rowAssets count]; ++i) {
 
         ELCAsset *asset = [_rowAssets objectAtIndex:i];
-
         if (i < [_imageViewArray count]) {
             UIImageView *imageView = [_imageViewArray objectAtIndex:i];
             imageView.image = [UIImage imageWithCGImage:asset.asset.thumbnail];
@@ -96,13 +107,24 @@
             overlayView.highlighted = !asset.enabled;
         } else {
             if (overlayImage == nil) {
-                overlayImage = [UIImage imageNamed:@"Overlay"];
-                overlayImageHighlighted = [UIImage imageNamed:@"Overlay-disabled"];
+                overlayImage = [UIImage imageNamed:defaultOverlayImageName];
+                overlayImageHighlighted = [UIImage imageNamed:defaultDisabledImageName];
             }
             UIImageView *overlayView = [[UIImageView alloc] initWithImage:overlayImage highlightedImage:overlayImageHighlighted];
             [_overlayViewArray addObject:overlayView];
             overlayView.hidden = asset.selected || !asset.enabled ? NO : YES;
             overlayView.highlighted = !asset.enabled;
+            if(defaultDimsCellOnSelection){
+                overlayView.contentMode = UIViewContentModeCenter;
+            }
+        }
+        if (i < [_overlayViewArray count]) {
+            UIImageView *imageView = [_imageViewArray objectAtIndex:i];
+            if(defaultDimsCellOnSelection && asset.selected){
+                imageView.alpha = 0.7;
+            }else{
+                imageView.alpha = 1.0;
+            }
         }
     }
 }
@@ -126,8 +148,14 @@
                 }
                 else {
                     asset.selected = !asset.selected;
+                    UIImageView *imageView = [_imageViewArray objectAtIndex:i];
                     UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
                     overlayView.hidden = !asset.selected;
+                    if(defaultDimsCellOnSelection && asset.selected){
+                        imageView.alpha = 0.7;
+                    }else{
+                        imageView.alpha = 1.0;
+                    }
                 }
             }
             else{

@@ -257,7 +257,11 @@ static float kELCSectionTitleTopSpace = 22.0f;
         return 0;
     }
     NSArray* sectionAssets = [self.elcAssetsBySection objectAtIndex:section];
-    return ceil([sectionAssets count] / (float)self.columns);
+    
+    if (self.columns > 0)
+        return ceil([sectionAssets count] / (float)self.columns);
+    else
+        return ceil([sectionAssets count] / 4.f);
 }
 
 - (NSArray *)assetsForIndexPath:(NSIndexPath *)path

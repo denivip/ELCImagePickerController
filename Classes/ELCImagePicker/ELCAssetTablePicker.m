@@ -8,7 +8,6 @@
 #import "ELCAssetTablePicker.h"
 #import "ELCAssetCell.h"
 #import "DVTogetherAppearance.h"
-#import "DVTogetherAppearance.h"
 
 static float kELCSectionTitleHeight = 20.0f;
 static float kELCSectionTitleTopSpace = 22.0f;

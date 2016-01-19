@@ -8,7 +8,7 @@
 #import "ELCAssetCell.h"
 #import "ELCAsset.h"
 #import "DVMessagesManager.h"
-#import "DVGTogetherAppearance.h"
+#import "DVTogetherAppearance.h"
 
 static BOOL defaultDimsCellOnSelection = NO;
 static NSString* defaultOverlayImageName = @"Overlay";

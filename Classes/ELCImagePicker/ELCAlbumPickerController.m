@@ -7,7 +7,7 @@
 
 #import "ELCAlbumPickerController.h"
 #import "ELCAssetTablePicker.h"
-#import "DVGTogetherAppearance.h"
+#import "DVTogetherAppearance.h"
 #import "DVGTableViewCell.h"
 #import "DVIntroductionInfoViewController.h"
 #import "PSTAlertController.h"

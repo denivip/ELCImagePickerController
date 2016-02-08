@@ -83,7 +83,7 @@
 {
     @autoreleasepool {
         
-        NSMutableArray *elcAssetsTemp = @[].mutableCopy;
+        NSMutableArray *tempArray = @[].mutableCopy;
         //[self.elcAssets removeAllObjects];
         [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
             
@@ -103,11 +103,11 @@
 
             if (!isAssetFiltered) {
                 //[self.elcAssets addObject:elcAsset];
-                [elcAssetsTemp addObject:elcAsset];
+                [tempArray addObject:elcAsset];
             }
 
          }];
-        self.elcAssets = elcAssetsTemp;
+        self.elcAssets = tempArray;
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
             // scroll to bottom

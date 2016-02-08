@@ -83,7 +83,8 @@
 {
     @autoreleasepool {
         
-        [self.elcAssets removeAllObjects];
+        NSMutableArray *elcAssetsTemp = @[].mutableCopy;
+        //[self.elcAssets removeAllObjects];
         [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
             
             if (result == nil) {
@@ -101,11 +102,12 @@
             }
 
             if (!isAssetFiltered) {
-                [self.elcAssets addObject:elcAsset];
+                //[self.elcAssets addObject:elcAsset];
+                [elcAssetsTemp addObject:elcAsset];
             }
 
          }];
-
+        self.elcAssets = elcAssetsTemp;
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
             // scroll to bottom
@@ -242,6 +244,7 @@
 {
     long index = path.row * self.columns;
     long length = MIN(self.columns, [self.elcAssets count] - index);
+    
     return [self.elcAssets subarrayWithRange:NSMakeRange(index, length)];
 }
 

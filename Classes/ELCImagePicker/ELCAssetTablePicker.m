@@ -71,6 +71,15 @@ static float kELCSectionTitleTopSpace = 22.0f;
     [self.tableView reloadData];
 }
 
+- (NSString*)getAssetId:(NSString*)assetUrl {
+    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:[NSURL URLWithString:assetUrl] resolvingAgainstBaseURL:NO];
+    NSArray *queryItems = urlComponents.queryItems;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name=%@",@"id"];
+    NSURLQueryItem *queryItem = [[queryItems filteredArrayUsingPredicate:predicate] firstObject];
+    NSString* localId = queryItem.value;
+    return localId;
+}
+
 - (void)preparePhotos
 {
     @autoreleasepool {
@@ -82,8 +91,14 @@ static float kELCSectionTitleTopSpace = 22.0f;
             }
             ELCAsset *elcAsset = [[ELCAsset alloc] initWithAsset:result];
             [elcAsset setParent:self];
-            NSString *url = [[result valueForProperty:ALAssetPropertyAssetURL] absoluteString];
-            elcAsset.enabled = ![self.disabledURLs containsObject:url];
+            NSString *assetId = [self getAssetId:[[result valueForProperty:ALAssetPropertyAssetURL] absoluteString]];
+            elcAsset.enabled = YES;
+            for(NSString* disurl in self.disabledURLs){
+                if([[self getAssetId:disurl] isEqualToString:assetId]){
+                    elcAsset.enabled = NO;
+                    break;
+                }
+            }
             [elcAssets addObject:elcAsset];
         }];
         
